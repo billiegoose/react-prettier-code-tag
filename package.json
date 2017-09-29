@@ -3,6 +3,9 @@
   "description": "Responsive JS <code> tags using prettier",
   "version": "0.0.2",
   "main": "./dist/PrettierCodeTag.js",
+  "files": [
+    "dist"
+  ],
   "license": "Unlicense",
   "repository": {
     "type": "git",
