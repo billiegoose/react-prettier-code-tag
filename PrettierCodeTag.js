@@ -31,14 +31,23 @@ export default class PrettierCodeTag extends React.Component {
     this.setState({ charWidth: width, charHeight: height })
   }
   render() {
+    // Extract props
+    let {
+      debug,
+      code,
+      options,
+      subtract,
+      ...syntaxHighlighterProps
+    } = this.props
+    // The subtract prop lets us offset for line number width manually
+    subtract = subtract ? parseInt(subtract) : 0
     // This kinda takes into account the 0.5em margin on both sides
-    let columns = Math.floor(this.state.textWidth / this.state.charWidth) - 2
-    let prettierOptions = Object.assign({}, this.props.options, {
-      printWidth: columns
-    })
+    let columns =
+      Math.floor(this.state.textWidth / this.state.charWidth) - 2 - subtract
     // prettier-ignore
-    let debug = `${this.state.textWidth} / ${this.state.charWidth} = ${columns} chars\n${'-'.repeat(Math.max(1, columns - 1))}*`
-    let code = prettier.format(this.props.code, prettierOptions)
+    debug = `${this.state.textWidth} / ${this.state.charWidth} = ${columns} chars\n${'-'.repeat(Math.max(1, columns - 1))}*`
+    options = Object.assign({}, options, { printWidth: columns })
+    code = prettier.format(code, options)
     return (
       <div
         style={{
@@ -64,13 +73,16 @@ export default class PrettierCodeTag extends React.Component {
             handleWidth
             onResize={this.updateFontSize.bind(this)}
           />
-          <SyntaxHighlighter language="javascript">M</SyntaxHighlighter>
-        </div>
-        <div className="responsive-prettier-code-box">
           <SyntaxHighlighter
             language="javascript"
-            customStyle={{ background: undefined }}
+            {...syntaxHighlighterProps}
+            showLineNumbers={false}
           >
+            M
+          </SyntaxHighlighter>
+        </div>
+        <div className="responsive-prettier-code-box">
+          <SyntaxHighlighter language="javascript" {...syntaxHighlighterProps}>
             {`${this.props.debug ? debug : code}`}
           </SyntaxHighlighter>
         </div>
