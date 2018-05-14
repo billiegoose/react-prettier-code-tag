@@ -1,7 +1,7 @@
 {
   "name": "react-prettier-code-tag",
   "description": "Responsive JS <code> tags using prettier",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "./dist/PrettierCodeTag.js",
   "files": [
     "dist"
